@@ -3,12 +3,12 @@
   color: #fff8ea;
 }
 
-.navbar-brand, .navbar-brand:hover {
+.navbar-brand, .navbar-brand:hover,.navbar-brand::after {
   font-family: "Lora", serif;
   font-weight: 600;
   font-size: 30px;
   font-style: italic;
-  color: #fff8ea;
+  color: #fff8ea !important;
   margin-right: 80px;
 }
 

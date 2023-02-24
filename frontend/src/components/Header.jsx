@@ -6,7 +6,7 @@ const Header = () => {
   return (
     <nav className="navbar navbar-expand-lg fw-semibold">
       <div className="container-fluid">
-        <Link to="/" className="navbar-brand" href="#">
+        <Link to="/" className="navbar-brand">
           SalesApp
         </Link>
         <button
@@ -23,34 +23,22 @@ const Header = () => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <NavLink to="/" className="nav-item">
-              <a className="nav-link me-3" href="#">
-                Add Sales
-              </a>
+              <div className="nav-link me-3">Add Sales</div>
             </NavLink>
             <NavLink to="/top5Sales" className="nav-item">
-              <a className="nav-link me-3" href="#">
-                Top 5 Sales
-              </a>
+              <div className="nav-link me-3">Top 5 Sales</div>
             </NavLink>
             <NavLink to="/revenue" className="nav-item">
-              <a className="nav-link me-3" href="#">
-                Today's Total Revenue
-              </a>
+              <div className="nav-link me-3">Today's Total Revenue</div>
             </NavLink>
             <NavLink to="/login" className="nav-item">
-              <a className="nav-link me-3" href="#">
-                Login
-              </a>
+              <div className="nav-link me-3">Login</div>
             </NavLink>
             <NavLink to="/register" className="nav-item">
-              <a className="nav-link me-3" href="#">
-                Register
-              </a>
+              <div className="nav-link me-3">Register</div>
             </NavLink>
             <NavLink to="/logout" className="nav-item">
-              <a className="nav-link me-3" href="#">
-                Logout
-              </a>
+              <div className="nav-link me-3">Logout</div>
             </NavLink>
           </ul>
         </div>
