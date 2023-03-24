@@ -6,7 +6,6 @@ import TopSales from "./pages/TopSales";
 import Revenue from "./pages/Revenue";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Logout from "./pages/Logout";
 
 function App() {
   return (
@@ -14,12 +13,12 @@ function App() {
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route exact path="/" element={<AddSale />} />
+          <Route path="/" element={<Register />} />
+          <Route exact path="/addsale" element={<AddSale />} />
           <Route exact path="/top5Sales" element={<TopSales />} />
           <Route exact path="/revenue" element={<Revenue />} />
+          <Route exact path="/signup" element={<Register />} />
           <Route exact path="/login" element={<Login />} />
-          <Route exact path="/register" element={<Register />} />
-          <Route exact path="/logout" element={<Logout />} />
         </Routes>
       </BrowserRouter>
     </div>

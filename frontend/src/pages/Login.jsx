@@ -1,44 +1,88 @@
-import React from "react";
-import "./Pages.css";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const [credentials, setCredentials] = useState({
+    password: "",
+    email: "",
+  });
+
+  let navigate = useNavigate();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await fetch("http://localhost:8000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: credentials.email,
+        password: credentials.password,
+      }),
+    });
+    const json = await response.json();
+    console.log(json);
+    if (!json.success) {
+      alert("Enter Valid Credentials");
+    }
+    if (json.success) {
+      localStorage.setItem("userEmail", credentials.email);
+
+      localStorage.setItem("authToken", json.authToken);
+      // console.log(localStorage.getItem("authToken"));
+      alert("User logged in successfully!");
+      navigate("/addsale");
+    }
+  };
+  const onChange = (event) => {
+    setCredentials({ ...credentials, [event.target.name]: event.target.value });
+  };
   return (
-    <div className="container">
-      <h1 className="text-center fw-bolder mb-3">Login Form</h1>
+    <form className="container" onSubmit={handleSubmit}>
+      <h2 className="text-center fw-bolder mb-2">Login Form</h2>
       <div className="mb-3">
         <label
-          for="exampleFormControlInput1"
+          htmlFor="exampleInputEmail1"
           className="form-label fw-semibold fs-6"
         >
-          Email
+          Email address
         </label>
         <input
           type="email"
           className="form-control py-2 fw-semibold"
-          id="exampleFormControlInput1"
-          placeholder="Enter Email ID"
+          aria-describedby="emailHelp"
+          name="email"
+          value={credentials.email}
+          onChange={onChange}
         />
+        <div id="emailHelp" className="form-text">
+          We'll never share your email with anyone else.
+        </div>
       </div>
-      <div className="mb-5">
+      <div className="mb-3">
         <label
-          for="exampleFormControlInput1"
+          htmlFor="exampleInputPassword1"
           className="form-label fw-semibold fs-6"
         >
-         Password
+          Password
         </label>
         <input
           type="password"
           className="form-control py-2 fw-semibold"
-          id="exampleFormControlInput1"
-          placeholder="Enter Password"
+          name="password"
+          value={credentials.password}
+          onChange={onChange}
         />
       </div>
       <div className="d-grid">
-        <button className="btn py-2 fs-5 fw-bold" type="button">
-          Login
+        <button type="submit" className="btn py-2 fs-5 fw-bold">
+          SignIn
         </button>
+        <Link to="/signup" className="m-auto mt-3">
+          New User? Signup here
+        </Link>
       </div>
-    </div>
+    </form>
   );
 };
 

@@ -1,89 +1,89 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const router = express.Router();
-const bcryptjs = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const UserModel = mongoose.model("UserModel");
 const { JWT_SECRET } = require("../config");
+const User = require("../models/user_model");
+const { body, validationResult } = require("express-validator");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+router.post(
+  "/signup",
+  [
+    body("firstName").isLength({ min: 2 }),
+    body("lastName").isLength({ min: 2 }),
 
-router.post("/signup", (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
-  if (!firstName || !lastName || !password || !email) {
-    return res
-      .status(400)
-      .json({ error: "One or more mandatory fields are empty" });
+    body("password", "Password must be 5 or more characters").isLength({
+      min: 5,
+    }),
+    body("email").isEmail(),
+  ],
+
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    const salt = await bcrypt.genSalt(10);
+    const securePassword = await bcrypt.hash(req.body.password, salt);
+
+    try {
+      await User.create({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        password: securePassword,
+        email: req.body.email,
+      }).then(res.json({ success: true }));
+    } catch (error) {
+      console.log(error);
+      res.json({ success: false });
+    }
   }
-  UserModel.findOne({ email: email })
-    .then((userInDB) => {
-      if (userInDB) {
+);
+
+// Login Route
+router.post(
+  "/login",
+  [
+    body("password", "Password must be 5 or more characters").isLength({
+      min: 5,
+    }),
+    body("email").isEmail(),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    let email = req.body.email;
+
+    try {
+      let userData = await User.findOne({ email });
+      if (!userData) {
         return res
-          .status(500)
-          .json({ error: "User with this email already registered" });
+          .status(400)
+          .json({ errors: "Try logging in with correct credentials" });
       }
-      bcryptjs
-        .hash(password, 16)
-        .then((hashedPassword) => {
-          const user = new UserModel({
-            firstName,
-            lastName,
-            email,
-            password: hashedPassword,
-          });
-          user
-            .save()
-            .then((newUser) => {
-              res.status(201).json({ result: "User Signed up Successfully!" });
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
 
-router.post("/login", (req, res) => {
-  const { email, password } = req.body;
-  if (!password || !email) {
-    return res
-      .status(400)
-      .json({ error: "One or more mandatory fields are empty" });
+      const psdCompare = await bcrypt.compare(
+        req.body.password,
+        userData.password
+      );
+      if (!psdCompare) {
+        return res
+          .status(400)
+          .json({ errors: "Try logging in with correct credentials" });
+      }
+
+      const data = {
+        user: {
+          id: userData.id,
+        },
+      };
+      const authToken = jwt.sign(data, JWT_SECRET);
+      return res.json({ success: true, authToken: authToken });
+    } catch (error) {
+      console.log(error);
+      res.json({ success: false });
+    }
   }
-  UserModel.findOne({ email: email })
-    .then((userInDB) => {
-      if (!userInDB) {
-        return res.status(401).json({ error: "Invalid Credentials" });
-      }
-      bcryptjs
-        .compare(password, userInDB.password) //comparing password
-        .then((didMatch) => {
-          if (didMatch) {
-            // In sign method we can pss any data that we want as a part of our token
-            const jwtToken = jwt.sign({ _id: userInDB._id }, JWT_SECRET);
-            const userInfo = {
-              _id: userInDB._id,
-              email: userInDB.email,
-              fullName: userInDB.fullName,
-            };
-            res
-              .status(200)
-              .json({ result: { token: jwtToken, user: userInfo } });
-          } else {
-            return res.status(401).json({ error: "Invalid Credentials" });
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
+);
 module.exports = router;

@@ -5,10 +5,10 @@ const AddSale = () => {
   return (
     <div>
       <div className="registration container">
-      <h1 className="text-center fw-bolder mb-3">Add Sale Entry</h1>
+        <h1 className="text-center fw-bolder mb-3">Add Sale Entry</h1>
         <div className="mb-3">
           <label
-            for="exampleFormControlInput1"
+            htmlFor="exampleFormControlInput1"
             className="form-label fw-semibold fs-6"
           >
             Product Name
@@ -22,7 +22,7 @@ const AddSale = () => {
         </div>
         <div className="mb-3">
           <label
-            for="exampleFormControlInput1"
+            htmlFor="exampleFormControlInput1"
             className="form-label fw-semibold fs-6"
           >
             Quantity
@@ -36,7 +36,7 @@ const AddSale = () => {
         </div>
         <div className="mb-5">
           <label
-            for="exampleFormControlInput1"
+            htmlFor="exampleFormControlInput1"
             className="form-label fw-semibold fs-6"
           >
             Amount

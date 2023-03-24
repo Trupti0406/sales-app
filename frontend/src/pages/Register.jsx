@@ -1,12 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
+  const [credentials, setCredentials] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  });
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await fetch("http://localhost:8000/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        firstName: credentials.firstName,
+        lastName: credentials.lastName,
+        email: credentials.email,
+        password: credentials.password,
+      }),
+    });
+    alert("User registered successfully!");
+    // toast("User registered successfully!");
+    navigate("/addsale");
+
+    const json = await response.json();
+    console.log(json);
+    if (!json.success) {
+      toast("Enter valid credentials");
+    }
+  };
+
+  const onChange = (event) => {
+    setCredentials({
+      ...credentials,
+      [event.target.name]: event.target.value,
+    });
+  };
   return (
-    <div className="container register">
-      <h1 className="text-center fw-bolder mb-3">Registration Form</h1>
+    <form className="container register" onSubmit={handleSubmit}>
+      <h2 className="text-center fw-bolder mb-2">Registration Form</h2>
       <div className="mb-3">
         <label
-          for="exampleFormControlInput1"
+          htmlFor="exampleFormControlInput1"
           className="form-label fw-semibold fs-6"
         >
           First Name
@@ -14,13 +55,15 @@ const Register = () => {
         <input
           type="text"
           className="form-control py-2 fw-semibold"
-          id="exampleFormControlInput1"
           placeholder="First Name"
+          name="firstName"
+          value={credentials.firstName}
+          onChange={onChange}
         />
       </div>
       <div className="mb-3">
         <label
-          for="exampleFormControlInput1"
+          htmlFor="exampleFormControlInput1"
           className="form-label fw-semibold fs-6"
         >
           Last Name
@@ -28,14 +71,16 @@ const Register = () => {
         <input
           type="text"
           className="form-control py-2 fw-semibold"
-          id="exampleFormControlInput1"
           placeholder="Last Name"
+          name="lastName"
+          value={credentials.lastName}
+          onChange={onChange}
         />
       </div>
 
       <div className="mb-3">
         <label
-          for="exampleFormControlInput1"
+          htmlFor="exampleFormControlInput1"
           className="form-label fw-semibold fs-6"
         >
           Email
@@ -43,13 +88,15 @@ const Register = () => {
         <input
           type="email"
           className="form-control py-2 fw-semibold"
-          id="exampleFormControlInput1"
           placeholder="Enter Email ID"
+          name="email"
+          value={credentials.email}
+          onChange={onChange}
         />
       </div>
-      <div className="mb-5">
+      <div className="mb-4">
         <label
-          for="exampleFormControlInput1"
+          htmlFor="exampleFormControlInput1"
           className="form-label fw-semibold fs-6"
         >
           Password
@@ -57,16 +104,21 @@ const Register = () => {
         <input
           type="password"
           className="form-control py-2 fw-semibold"
-          id="exampleFormControlInput1"
           placeholder="Enter Password"
+          name="password"
+          value={credentials.passwords}
+          onChange={onChange}
         />
       </div>
       <div className="d-grid">
-        <button className="btn py-2 fs-5 fw-bold" type="button">
-          Register
+        <button type="submit" className="btn py-2 fs-5 fw-bold">
+          Signup
         </button>
+        <Link to="/login" className="m-auto mt-2">
+          Already a user? Login here
+        </Link>
       </div>
-    </div>
+    </form>
   );
 };
 

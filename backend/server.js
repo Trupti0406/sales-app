@@ -13,14 +13,10 @@ mongoose.connection.on("connected", () => {
 mongoose.connection.on("error", (error) => {
   console.log("Some error occured while connecting to data");
 });
-
-require("./models/user_model");
-
 app.use(cors());
 app.use(express.json());
 
 // registering user schema
-require("./models/user_model");
 app.use(require("./routes/user_route"));
 
 app.listen(PORT, () => {
