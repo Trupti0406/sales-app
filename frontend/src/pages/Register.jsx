@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
   const [credentials, setCredentials] = useState({
@@ -26,13 +24,12 @@ const Register = () => {
       }),
     });
     alert("User registered successfully!");
-    // toast("User registered successfully!");
-    navigate("/addsale");
+    navigate("/login");
 
     const json = await response.json();
     console.log(json);
     if (!json.success) {
-      toast("Enter valid credentials");
+      alert("Enter valid credentials");
     }
   };
 
