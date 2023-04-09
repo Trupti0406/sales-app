@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Alerter from "sweetalert2";
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
@@ -30,7 +31,12 @@ const Login = () => {
 
       localStorage.setItem("authToken", json.authToken);
       // console.log(localStorage.getItem("authToken"));
-      alert("User logged in successfully!");
+      Alerter.fire({
+        title: "Success!",
+        text: "User Logged In Successfully",
+        icon: "success",
+        confirmButtonText: "Ok",
+      });
       navigate("/addsale");
     }
   };

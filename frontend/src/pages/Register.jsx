@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Alerter from "sweetalert2";
 
 const Register = () => {
   const [credentials, setCredentials] = useState({
@@ -23,7 +24,12 @@ const Register = () => {
         password: credentials.password,
       }),
     });
-    alert("User registered successfully!");
+    Alerter.fire({
+      title: "Success!",
+      text: "User Registered Successfully",
+      icon: "success",
+      confirmButtonText: "Login",
+    });
     navigate("/login");
 
     const json = await response.json();

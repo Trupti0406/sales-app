@@ -11,11 +11,10 @@ router.post("/addsale", authMiddleware, (req, res) => {
     return res.status(400).json({ err: "Fill all the mandatory Fields" });
   }
   //   req.user.password = undefined;
-  const addSales = new Sales({
+  const addSales = new Sale({
     productName: productName,
     quantity: quantity,
     amount: amount,
-    author: req.user,
   });
   addSales
     .save()
@@ -29,28 +28,13 @@ router.post("/addsale", authMiddleware, (req, res) => {
 });
 
 //gathering top 5 sales from DB
-// router.get("/top5Sales", (req, res) => {
-//   Sale.find({})
-//     .sort({ amount: -1 })
-//     .limit(5)
-//     .exec((err, sales) => {
-//       if (err) {
-//         s;
-//         console.log(err);
-//         res.status(500).send("Error retreiving top 5 data");
-//       } else {
-//         res.json(sales);
-//       }
-//     });
-// });
-router.get("/top5Sales", authMiddleware, (req, res) => {
-  Sale.find({ author: req.user._id })
-    .populate("author", "_id productName quantity amount")
-    .sort({ quantity: -1 })
-    .limit(5)
+router.get("/top-five", (req, res) => {
+  Sale.find()
+    .populate("_id productName quantity amount")
+    .sort({ amount: -1 }) // this is responsible for giving us sales in descending form based on the amount
+    .limit(5) //give only 5 sales
     .then((topsales) => {
-      res.status(200).json({ Sale: topsales });
-      // console.log({ Sale: topsales });
+      res.status(200).json({ sales: topsales });
     })
     .catch((err) => {
       res.status(401).json({ err: "Somthing goes wrong" });
@@ -59,14 +43,23 @@ router.get("/top5Sales", authMiddleware, (req, res) => {
 });
 
 //Gathering sales amount and revenue of the day
-router.get("/revenue", (req, res) => {
-  Sale.find()
-    .sort({ amount: -1 })
-    .limit(5)
-    .then((error, sales) => {
-      if (error) console.log(error);
-
-      res.status(200).json({ sales });
+router.get("/revenue", async (req, res) => {
+  try {
+    const result = await Sale.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalRevenue: { $sum: "$amount" },
+        },
+      },
+    ]);
+    res.json({ totalRevenue: result[0].totalRevenue });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Some server error occured while fetching the revenue",
     });
+  }
 });
+
 module.exports = router;

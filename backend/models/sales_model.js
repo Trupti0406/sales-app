@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const { ObjectId } = mongoose.Schema.Types;
 
 const addSales = new Schema({
   productName: {
@@ -15,7 +16,7 @@ const addSales = new Schema({
     required: true,
   },
   author: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: ObjectId,
     ref: "user",
   },
 });
