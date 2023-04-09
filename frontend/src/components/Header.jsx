@@ -1,11 +1,17 @@
 import React from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import "./Header.css";
+import Alerter from "sweetalert2";
 
 const Header = () => {
   const navigate = useNavigate();
   const handleLogout = () => {
-    alert("Are you sure you want to logout?");
+    Alerter.fire({
+      title: "Success!",
+      text: "Are you sure you want to logout ?",
+      icon: "warning",
+      confirmButtonText: "Yes",
+    });
     localStorage.removeItem("authToken");
     localStorage.removeItem("userEmail");
     console.log("clicked logout");

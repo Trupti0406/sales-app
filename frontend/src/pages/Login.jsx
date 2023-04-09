@@ -24,7 +24,12 @@ const Login = () => {
     const json = await response.json();
     console.log(json);
     if (!json.success) {
-      alert("Enter Valid Credentials");
+      Alerter.fire({
+        title: "Failed!",
+        text: "Enter valid credentials!",
+        icon: "error",
+        confirmButtonText: "Try again",
+      });
     }
     if (json.success) {
       localStorage.setItem("userEmail", credentials.email);
