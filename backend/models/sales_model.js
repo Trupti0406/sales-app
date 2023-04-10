@@ -15,9 +15,5 @@ const addSales = new Schema({
     type: Number,
     required: true,
   },
-  author: {
-    type: ObjectId,
-    ref: "user",
-  },
 });
 module.exports = mongoose.model("sales", addSales);

@@ -27,7 +27,7 @@ router.post("/addsale", authMiddleware, (req, res) => {
     });
 });
 
-//gathering top 5 sales from DB
+//Getting top 5 sales from our MongoDB database
 router.get("/top-five", (req, res) => {
   Sale.find()
     .populate("_id productName quantity amount")
@@ -42,7 +42,7 @@ router.get("/top-five", (req, res) => {
     });
 });
 
-//Gathering sales amount and revenue of the day
+//Gathering revenue
 router.get("/revenue", async (req, res) => {
   try {
     const result = await Sale.aggregate([
