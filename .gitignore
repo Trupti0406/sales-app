@@ -11,6 +11,8 @@ node_modules
 # production
 /build
 
+/Thought Note_ Creating a Web App Part 2.pdf
+
 # misc
 .DS_Store
 .env.local

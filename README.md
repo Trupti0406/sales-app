@@ -8,6 +8,8 @@
 - User can see top 5 sales.
 - Total revenue of sale.
 
+### Working video of this application: [Click Here](https://drive.google.com/file/d/1SlO-u27iy571RkscZvV5293tPtCpeRYz/view?usp=sharing).
+
 ### How to run this project on your local system?
 
 1. Go to the **"frontend"** folder, open the frontend folder in an integrated terminal and run command **`npm install`** to install all the dependencies.
