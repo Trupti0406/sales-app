@@ -14,7 +14,7 @@ const Header = () => {
     });
     localStorage.removeItem("authToken");
     localStorage.removeItem("userEmail");
-    console.log("clicked logout");
+    // console.log("clicked logout");
     navigate("/");
   };
   return (
@@ -54,7 +54,7 @@ const Header = () => {
                   <div className="nav-link me-3">Top 5 Sales</div>
                 </NavLink>
                 <NavLink to="/revenue" className="nav-item">
-                  <div className="nav-link me-3">Today's Total Revenue</div>
+                  <div className="nav-link me-3">Total Revenue</div>
                 </NavLink>
                 <NavLink
                   onClick={handleLogout}

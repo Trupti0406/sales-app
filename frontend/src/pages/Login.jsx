@@ -42,8 +42,8 @@ const Login = () => {
         icon: "success",
         confirmButtonText: "Ok",
       });
-      navigate("/addsale");
     }
+    navigate("/addsale");
   };
   const onChange = (event) => {
     setCredentials({ ...credentials, [event.target.name]: event.target.value });
