@@ -1,5 +1,7 @@
 # Sales App
 
+## Live Demo: https://sales-app-rza5.onrender.com
+
 ## Features:
 
 - Users can register themselves on the app.
