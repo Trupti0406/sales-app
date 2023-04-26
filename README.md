@@ -2,6 +2,8 @@
 
 ## Live Demo: https://sales-app-rza5.onrender.com
 
+### Working video of this application: [Click Here](https://drive.google.com/file/d/1SlO-u27iy571RkscZvV5293tPtCpeRYz/view?usp=sharing).
+
 ## Features:
 
 - Users can register themselves on the app.
@@ -10,7 +12,6 @@
 - User can see top 5 sales.
 - Total revenue of sale.
 
-### Working video of this application: [Click Here](https://drive.google.com/file/d/1SlO-u27iy571RkscZvV5293tPtCpeRYz/view?usp=sharing).
 
 ### How to run this project on your local system?
 
